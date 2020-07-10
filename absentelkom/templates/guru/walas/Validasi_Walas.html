@@ -1,0 +1,85 @@
+{% extends 'base.html' %}
+{% block title %}
+  Absen Telkom - Kelas
+{% endblock %}
+{% load static %}
+{% block extra_head %}
+  <link rel="stylesheet" type="text/css" href="{% static 'css/guru/nonwalas_guru/validate.css' %}">
+  <script src="https://kit.fontawesome.com/4892da469d.js" crossorigin="anonymous"></script>
+{% endblock %}
+{% block content %}
+  <div class="Display">
+    <div class="d-flex justify-content-start pr-1 text-white" style="background: linear-gradient(to right, #ff9966  0%, #ff5e62  100%);">
+      <div class="kembali">
+        <a onclick="goback()" class="lead logout text-decoration-none " ><i><img src="{% static 'img/back.png' %}" style="width: 20px; height: 20px;" class="img-fluid mt-2 " alt="Responsive image"></i></a>
+      </div>
+      <div class="ml-auto">
+      </div>  
+    </div>  
+    <div class="jumbotron jumbotron-fluid m-0 text-white" style="background: linear-gradient(to right, #ff9966  0%, #ff5e62  100%);min-height:240px; max-height: 284px;">
+      <div class="container-fluid">
+        <div class="text-align-left mt-4 ml-3">
+          <p class="lead m-0"><h1>Validasi</h1></p>
+          <p class="lead m-0"><h3>{{ namaacara }}</h3></p>
+          <h3>{{ namakelas }}</h3>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="col-md-10">
+    <div class="col-md-10 p-5 pt-2 mt-5">
+      <div class="table-responsive-sm">
+        <form action="validasi_views" method="POST">
+          {% csrf_token %}
+          <table class="table">
+            <th scope="col" class="text-center">No</th>
+            <th scope="col" class="text-center">NIS</th>
+            <th scope="col" class="text-center">Nama</th>
+            <th scope="col" class="text-center">Validasi</th>
+            <th>
+              <div class="form-check">
+                <input class="form-check-input" type="checkbox" value="" id="allCheck">
+                <p>check all</p>
+              </div>
+            </th>
+            <tbody class="text-center">
+              {% for absen in tbl_absen %}
+                {% if absen.id_acara.waktu_acara|date:"SHORT_DATE_FORMAT" == todaydate|date:"SHORT_DATE_FORMAT" %}
+                  <tr>
+                    <th scope="row">{{ forloop.counter }}</th>
+                    <td>{{ absen.id_siswa_id }}</td>
+                    <td>{{ absen.id_siswa.nama_siswa }}</td>
+                    <td>
+                      <div class="form-check">
+                        <input class="form-check-input" type="checkbox" value="{{ absen.id_absen }}" name="Check{{ forloop.counter }}">
+                      </div>
+                    </td>
+                  </tr>
+                  {% if forloop.last %}
+                    <input type="hidden" value="{{ forloop.counter }}" name="lengthloop" id="lengthloop">
+                  {% endif %}
+                {% endif %}
+              {% endfor %}
+            </tbody>
+          </table>
+          <input class="btn btn-primary col-md-2 offset-md-10" id="inputsubmit" type="submit" value="Submit">
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    $(document).ready(function(){
+      $("#allCheck").click(function(){
+        if($("#allCheck").prop("checked") == true){
+          $(':checkbox').prop('checked', true);
+        }else{
+          $(':checkbox').prop('checked', false);              
+        }
+      });
+    });
+    function goback(){
+      window.history.back();
+    }
+  </script>
+{% endblock %}

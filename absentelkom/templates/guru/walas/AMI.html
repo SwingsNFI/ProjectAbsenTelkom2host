@@ -1,0 +1,113 @@
+{% extends 'base.html' %}
+{% block title %}
+  Absen Telkom - AMI
+{% endblock %}
+{% load static %}
+{% block extra_head %}
+  <link rel="stylesheet" type="text/css" href="{% static 'css/guru/nonwalas_guru/validate.css' %}">
+  <script src="https://kit.fontawesome.com/4892da469d.js" crossorigin="anonymous"></script>
+{% endblock %}
+{% block content %}
+  <div class="d-flex justify-content-start pr-1 text-white" style="background: linear-gradient(to right, #ff9966  0%, #ff5e62  100%);">
+    <div class="kembali">
+      <a href="../guru/pilihkategori.html" class="lead logout text-decoration-none " > <i> <img src="{% static 'img/back.png' %}" style="width: 20px; height: 20px;" class="img-fluid mt-2 " alt="Responsive image"> </i></a>
+    </div>
+    <div class="ml-auto">
+    </div>
+  </div>
+  <div class="jumbotron jumbotron-fluid m-0 text-white" style="background: linear-gradient(to right, #ff9966  0%, #ff5e62  100%);min-height:240px; max-height: 284px;">
+    <div class="container-fluid">
+      <div class="text-align-left mt-2 ml-5">
+        <h1>Penilaian</h1>
+        <h3>AMI</h3>
+        <h3>{{ namakelas }}</h3>
+      </div>
+    </div>
+  </div>
+  <div class="col-md-10">
+    <section style="margin-top: 20px; margin-left: 20px; margin-bottom: 20px;">
+      <section>
+      <div class="d-flex flex-row-reverse ">        
+        <div class="form-check m-0">
+          <label>Check All</label>
+          <input class="form-check-input" type="checkbox" value="" id="allCheck" style="margin-left:10px">
+        </div>
+      </div>
+      </section>
+      <form action="ami_validasi_views" method="POST">
+        {% csrf_token %}
+        <section>
+          <label>Pilih jam pelajaran</label>
+          <div class="dropdown btn">
+            <select class="form-control" name="idstart" id="exampleFormControlSelect1">
+              {% for tbl_jampel in tbl_jampels %}
+                <option value="{{ tbl_jampel.id_jampel }}">{{ tbl_jampel.nama_jampel }}</option>
+              {% endfor %}
+            </select>
+          </div>
+          <label>s/d</label>
+          <div class="dropdown btn">
+            <select class="form-control" name="idend" id="exampleFormControlSelect1">
+              {% for tbl_jampel in tbl_jampels %}
+                <option value="{{ tbl_jampel.id_jampel }}">{{ tbl_jampel.nama_jampel }}</option>
+              {% endfor %}
+            </select>
+          </div>
+        </section>
+        <div class="col-md-12 p-5 pt-2 mt-5" style="font-size: 18px">
+          <div class="table-responsive-sm">
+            <table class="table">
+              <th scope="col">No</th>
+              <th scope="col">NIS</th>
+              <th scope="col">Nama</th>
+              <th scope="col">Ketepatan Waktu</th>
+              <th scope="col">Kerapihan Attribut</th>
+              <th scope="col">Kerapihan Kelas</th>
+              <tbody>
+                {% for siswa in siswas %}
+                  <tr>
+                    <th scope="row">{{ forloop.counter }}</th>
+                    <td>{{ siswa.id_siswa }}</td>
+                    <td>{{ siswa.nama_siswa }}</td>
+                    <td>
+                      <div class="form-check">
+                        <input class="form-check-input" type="checkbox" name="hadir{{ forloop.counter }}" id="defaultCheck">
+                      </div>
+                    </td>
+                    <td>
+                      <div class="form-check">
+                        <input class="form-check-input" type="checkbox" name="rapih{{ forloop.counter }}" id="defaultCheck">
+                      </div>
+                    </td>
+                    <td>
+                      <div class="form-check">
+                        <input class="form-check-input" type="checkbox" name="bersih{{ forloop.counter }}" id="defaultCheck">
+                      </div>
+                    </td>
+                  </tr>
+                  <input type="hidden" value="{{ siswa.id_siswa }}" name="validasi{{ forloop.counter }}">
+                  {% if forloop.last %}
+                    <input type="hidden" value="{{ forloop.counter }}" name="lengthloop" id="lengthloop">
+                  {% endif %}
+                {% endfor %}
+              </tbody>
+            </table>
+            <input class="btn btn-primary col-md-2 offset-md-10" type="submit" value="Submit">
+          </div>
+        </div>
+      </form>
+    </section>
+  </div>
+  <script>
+    $(document).ready(function(){
+      $("#allCheck").click(function(){
+        console.log($("#allCheck").prop("checked"));
+        if($("#allCheck").prop("checked") == true){
+          $(':checkbox').prop('checked', true);
+        }else{
+          $(':checkbox').prop('checked', false);              
+        }
+      });
+    });
+  </script>
+{% endblock %}

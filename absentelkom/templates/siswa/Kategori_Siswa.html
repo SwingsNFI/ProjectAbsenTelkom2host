@@ -1,0 +1,96 @@
+{% extends 'base.html' %}
+{% block title %}
+  Absen Telkom - Kategori
+{% endblock %}
+{% load custom_template_tags %}
+{% load static %}
+{% block extra_head %}
+  <link rel="stylesheet" type="text/css" href="{% static 'css/siswa/Tambahan.css' %}">
+  <script src="https://kit.fontawesome.com/4892da469d.js" crossorigin="anonymous"></script>
+{% endblock %}
+{% block content %}
+  <div class="d-flex gradient justify-content-end pr-1 text-white">
+    <a href="" class="lead logout text-decoration-none">Logout</a>
+  </div>
+  <div class="jumbotron jumbotron-fluid gradient m-0 text-white"style="min-height:200px; max-height: 230px;">
+    <div class="container-fluid">
+      <div class="text-center">
+        <h1 class="display-4">
+          <i><img src="{% static 'img/user.png' %}" class="User"></i>
+        </h1>
+        <p class="lead m-0 ">/ {{ tbl_siswa.nama_siswa }} /</p>
+        <p class="lead m-0">{{ tbl_siswa.id_kelas.nama_kelas }}</p>
+        {% if absen_amis %}
+          {% for absenami in absen_amis %}
+            {% if absenami.kehadiran %}
+              {% namvar 1 as action %}
+            {% endif %}
+            {% if absenami.kerapihan %}
+              {% namvar 1 as action %}
+            {% endif %}
+            {% if absenami.kebersihan %}
+              {% namvar 1 as action %}
+            {% endif %}
+            {% if forloop.last %}
+              {% if validasis %}
+                {% for validasi in validasis %}
+                  {% namvar 1 as action %}
+                  {% if forloop.last %}
+                    <h6>{{ action }}pt</h6>
+                    {% namvar2 action as action2 %}
+                  {% endif %}
+                {% endfor %}
+              {% else %}
+                <h6>{{ action }}pt</h6>
+                {% namvar2 action as action2 %}
+              {% endif %}
+            {% endif %}
+          {% endfor %}
+        {% else %}
+          {% if validasis %}
+            {% for validasi in validasis %}
+              {% namvar 1 as action %}
+              {% if forloop.last %}
+                <h6>{{ action }}pt</h6>
+                {% namvar2 action as action2 %}
+              {% endif %}
+            {% endfor %}
+          {% else %}
+            <h6>0pt</h6>
+            {% namvar2 0 as action2 %}
+          {% endif %}
+        {% endif %}
+        <input type="hidden" value="{% delnamvar %}">  
+      </div>
+    </div>
+  </div>
+  <div class="gradient">
+    <div class="d-flex justify-content-center text-white text-center" style="background-color: rgb(247, 148, 29,18%);">
+      {% namvar2 0 as action2 %}
+      {% if action2 >= 5 %}
+        <p class="lead h5">"Lebih dari sama dengan 5"</p>
+      {% endif %}
+      {% if action2 < 5 and action2 >= 2 %}
+        <p class="lead h5">"Lebih dari sama dengan 2 dan kurang dari 5"</p>
+      {% endif %}
+      {% if action2 < 2 %}
+        <p class="lead h5">"Kurang dari 2"</p>
+      {% endif %}
+      <input type="hidden" value="{% delnamvar2 %}">
+    </div>
+  </div>
+  <div class="col-md-12">  
+    <div class="row mt-4 text-white">
+        <ul class="btn-size text-">
+          <form action="to_acara_views" method="POST">
+            {% csrf_token %}
+            {% for kategori in tbl_kategori %}
+              {% if kategori.nama_kategori|lower != "disiplin" %}
+                  <li><button type="submit" class="btn btn-danger btn-lg btn-block btn-height gradient mt-5 text-left" name="idkategori" value="{{ kategori.id_kategori }}">{{ kategori.nama_kategori }}</button></li>
+              {% endif %}
+            {% endfor %}
+          </form>
+        </ul>
+    </div>
+  </div>
+{% endblock %}

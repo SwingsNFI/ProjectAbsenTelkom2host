@@ -1,0 +1,58 @@
+{% extends 'base.html' %}
+{% block title %}
+  Absen Telkom - Kelas
+{% endblock %}
+{% load static %}
+{% block extra_head %}
+  <link rel="stylesheet" type="text/css" href="{% static 'css/guru/nonwalas_guru/Tambahan.css' %}">
+  <script src="https://kit.fontawesome.com/4892da469d.js" crossorigin="anonymous"></script>
+{% endblock %}
+{% block content %}
+   <div class="d-flex justify-content-start pr-1 text-white" style="background: linear-gradient(to right, #ff9966  0%, #ff5e62  100%);">
+      <div class="kembali">
+         <a onclick="goback()" class="lead logout text-decoration-none " > <i> <img src="{% static 'img/back.png' %}" style="width: 20px; height: 20px;" class="img-fluid mt-2 " alt="Responsive image"> </i></a>
+      </div>
+      <div class="ml-auto">
+      </div>  
+   </div>
+   <div class="jumbotron jumbotron-fluid m-0 text-white" style="background: linear-gradient(to right, #ff9966  0%, #ff5e62  100%);min-height:240px; max-height: 284px;">
+      <div class="container-fluid">
+         <div class="text-center mt-4">
+            <h1 class="display-4">
+               <i><img src="{% static 'img/user.png' %}" class="User"></i>
+            </h1>
+            <p class="lead m-0 ">{{ tbl_guru.nama_guru }}</p>
+            <p class="lead m-0">Guru</p>
+         </div>
+      </div>
+   </div>
+   <section>
+      <div class="container-fluid mt-5">         
+         <div class="row">                 
+            {% for kelas in tbl_kelas %}
+               <div class="col-md-3">  
+                  <form action="to_ami_views" method="POST">
+                     {% csrf_token %}
+                     <a href="javascript:;" onclick="parentNode.submit();">
+                        <input type="hidden" value="{{ kelas.id_kelas }}" name="idkelas">
+                        <div class="card mb-3 mt-3 text-white text-decoration-none" style="max-width: 18rem; background: linear-gradient(to right, #ff9966  0%, #ff5e62  100%);" >
+                           <div class="card-header">
+                              Kelas
+                           </div>
+                           <div class="card-body">
+                              <h5>{{ kelas.nama_kelas }}</h5>
+                           </div>
+                        </div>
+                     </a>
+                  </form>
+               </div>
+            {% endfor %}
+         </div>
+      </div>
+   </section>
+   <script>
+      function goback(){
+         window.history.back();
+      }
+   </script>
+{% endblock %}

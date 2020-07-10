@@ -1,0 +1,66 @@
+{% extends 'base.html' %}
+{% block title %}
+  Absen Telkom - Acara
+{% endblock %}
+{% load static %}
+{% block extra_head %}
+  <link rel="stylesheet" type="text/css" href="{% static 'css/siswa/Tambahan.css' %}">
+  <script src="https://kit.fontawesome.com/4892da469d.js" crossorigin="anonymous"></script>
+{% endblock %}
+{% block content %}
+  <div class="d-flex gradient justify-content-start pr-1 text-white">
+    <a onclick="goback()" class="lead logout text-decoration-none"><i class="fas fa-chevron-left"></i></a>
+  </div>
+  <div class="jumbotron jumbotron-fluid gradient m-0 text-white"style="min-height:200px; max-height: 230px;">
+    <div class="container-fluid">
+      <div class="text-center">
+        <h1 class="display-4">
+          <i><img src="{% static 'img/user.png' %}" class="User"></i>
+        </h1>
+        <p class="lead m-0 ">/ {{ nama }} /</p>
+        <p class="lead m-0">{{ kelas }}</p>
+        <h6>20pt</h6>
+      </div>
+    </div>
+  </div>
+  <div class="d-flex justify-content-center mt-2">
+    <p class="h4">{{ kategori.nama_kategori }}</p>
+  </div>
+  <div class="col-md-12"> 
+    <div class="row mt-4">
+      <ul class="btn-size text-white">
+        <form action="absensave_views" method="POST">
+          {% csrf_token %}
+          {% for acara in acaras %}
+            <li><button type="submit" class="btn btn-lg btn-block btn-height gradient mt-5 text-left text-white" data-toggle="modal" data-target="#Religius" id="Religius1" value="{{ acara.id_acara }}" name="submitidacara">{{ acara.id_nama_acara.nama_acara }}</button></li>
+          {% endfor %}
+        </form>
+      </ul>
+    </div>
+  </div>
+  <script>
+    function goback(){
+      window.history.back();
+    }
+  </script>
+
+  <!-- Modal -->
+  <div class="modal fade" id="Religius" tabindex="-1" role="dialog" aria-labelledby="ReligiusLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content text-center">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <h1 style="color: green"><i class="fas fa-check"></i></h1>
+          <h3>Absen Sukses !</h3>
+        </div>
+        <div class="modal-footer-centered mb-4">
+          <button type="button" class="btn btn-success" data-dismiss="modal" style="width: 100px;">Oke</button>
+        </div>
+      </div>
+    </div>
+  </div>
+{% endblock %}

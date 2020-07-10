@@ -1,0 +1,47 @@
+{% extends 'base.html' %}
+{% block title %}
+  Absen Telkom - Acara
+{% endblock %}
+{% load static %}
+{% block extra_head %}
+  <link rel="stylesheet" type="text/css" href="{% static 'css/guru/walas/Tambahan.css' %}">
+  <script src="https://kit.fontawesome.com/4892da469d.js" crossorigin="anonymous"></script>
+{% endblock %}
+{% block content %}
+  <div class="d-flex justify-content-start pr-1 text-white" style="background: linear-gradient(to right, #ff9966  0%, #ff5e62  100%);">
+    <div class="kembali"> 
+      <a onclick="goback()" class="lead logout text-decoration-none " > <i> <img src="{% static 'img/back.png' %}" style="width: 20px; height: 20px;" class="img-fluid mt-2 " alt="Responsive image"> </i></a>
+    </div>
+  </div>
+  <div class="jumbotron jumbotron-fluid m-0 text-white" style="background: linear-gradient(to right, #ff9966  0%, #ff5e62  100%);min-height:240px; max-height: 284px;">
+    <div class="container-fluid">
+      <div class="text-center mt-4">
+        <h1 class="display-4">
+          <i><img src="{% static 'img/user.png' %}" class="User"></i>
+        </h1>
+        <p class="lead m-0 ">{{ nama }}</p>
+        <p class="lead m-0">Guru</p>  
+      </div>
+    </div>
+  </div>
+  <div class="col-md-12">  
+    <div class="row text-black mt-4 text-decoration-none" >
+      <ul style="width: 90% " class="btn-size text-white">
+        <form action="to_pilihkelas_walas_views" method="POST">
+          {% csrf_token %}
+          {% for acara in acaras %}
+            {% if acara.waktu_acara|date:"SHORT_DATE_FORMAT" == todaydate|date:"SHORT_DATE_FORMAT" %}
+              <li class="text-decoration-none"><button type="submit" class="btn btn-danger btn-lg btn-block btn-height mt-5" style="background: linear-gradient(to right, #ff9966  0%, #ff5e62  100%);" value="{{ acara.id_acara }}" name="idacara">{{ acara.id_nama_acara.nama_acara }}</button></li>
+              <input type="hidden" value="{{ acara.id_nama_acara_id }}" name="idnamaacara">
+            {% endif %}
+          {% endfor %}
+        </form>
+      </ul>
+    </div>
+  </div>
+  <script>
+    function goback(){
+      window.history.back();
+    }
+  </script>
+{% endblock %}

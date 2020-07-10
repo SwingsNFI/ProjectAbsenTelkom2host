@@ -1,0 +1,192 @@
+{% extends 'base.html' %}
+{% block title %}
+  Absen Telkom - Laporan
+{% endblock %}
+{% load custom_template_tags %}
+{% load static %}
+{% block extra_head %}
+  <script src="https://kit.fontawesome.com/4892da469d.js" crossorigin="anonymous"></script>
+  <style>
+    body{
+      overflow-x : hidden;
+    }
+  </style>
+{% endblock %}
+{% block content %}    
+  <nav class="navbar navbar-expand-lg navbar-light " style="background-image: linear-gradient(to right,#ff9966,#ff5e62);">
+    <a class="navbar-brand ml-2 text-white" href="#" >
+      <i class="fa fa-user" aria-hidden="true"></i>  
+      {{ nama_guru }}
+    </a>
+    <div class="navbar-nav ml-auto ">
+      <a class="nav-item nav-link active text-white" href="login_guru_views">Logout</a>
+    </div>
+  </nav>
+  <section style="margin-top: 20px; margin-left: 20px; margin-bottom: 20px;">
+    <div class="dropdown">
+      <form action="laporantanggal_admin_views" method="POST">
+        {% csrf_token %}
+        <div class="row">
+          <div class="col- ml-2">
+            Awal : 
+            <!-- Search form -->
+            <div class="active-cyan-4 mb-4">
+              <input class="form-control" type="date" name="start" placeholder="Search" aria-label="Search">
+            </div>
+          </div>
+          <div class="col- ml-2">
+            Akhir : 
+            <div class="active-cyan-4 mb-4">
+              <input class="form-control" type="date" name="end" placeholder="Search" aria-label="Search">
+            </div>  
+          </div>
+          <div class="col- ml-2">
+            &nbsp;
+            <div class="mb-4">
+              <button type="submit" class="btn btn-secondary"><i class="fa fa-search" aria-hidden="true"></i></button>
+            </div>
+          </div>
+        </div>
+      </form>
+      <button class="btn btn-white dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="border: 1px gray solid;">
+        -- Pilih Kelas --
+      </button>    
+      <div class="dropdown-menu" aria-labelledby="dropdownMenuButton" id="kelas">
+        {% for kelas in tbl_kelas %}
+          <form action="laporankelas_admin_views" method="POST" id="theform{{ forloop.counter }}">
+            {% csrf_token %}
+            <a class="dropdown-item" href="javascript:;" onclick="document.forms['theform{{ forloop.counter }}'].submit();">{{ kelas.nama_kelas }}</a>
+            <input type="hidden" value="{{ kelas.id_kelas }}" name="idkelas">
+          </form>
+        {% endfor %}
+      </div>
+    </div>
+  </section>
+  <section> 
+    <div class="table-responsive" >
+      <table class="table table-large">   
+        <thead>
+          <tr class="text-center">
+            <th scope="col"></th>
+            <th scope="col">Nama</th>
+            <th scope="col">Kelas</th>
+            {% for nama_acara in tbl_nama_acara %}
+              {% if nama_acara.nama_acara != "AMI" %}
+                <th scope="col">{{ nama_acara.nama_acara }}</th>
+              {% endif %}
+            {% endfor %}
+            <th scope="col">AMI</th> 
+            <th scope="col">Detail AMI</th>
+            <th scope="col">Total</th>
+          </tr>
+        </thead>   
+        <tbody>
+          {% for siswa in tbl_siswa %}
+            <tr class="text-center">
+              <th scope="row">{{ forloop.counter }}</th>
+              <td>{{ siswa.nama_siswa }}</td>
+              <td>{{ siswa.id_kelas.nama_kelas }}</td>
+              {% for nama_acara in tbl_nama_acara %}
+                {% if nama_acara.nama_acara != "AMI" %}
+                  {% if tbl_validasi %}
+                    {% for validasi in tbl_validasi %}
+                      {% if validasi.id_absen.id_siswa_id == siswa.id_siswa and validasi.id_absen.id_acara.id_nama_acara.nama_acara|upper == nama_acara.nama_acara|upper %}
+                        {% namvar 1 as action %}
+                        {% namvar4 1 as action4 %}
+                      {% endif %}
+                      {% if forloop.last %}
+                        <td>{{ action }}</td>
+                        <input type="hidden" value="{% delnamvar %}">
+                      {% endif %}
+                    {% endfor %}
+                  {% endif %}
+                {% endif %}
+              {% endfor %}
+              {% if tbl_absen_ami %}
+                {% for absen_ami in tbl_absen_ami %}
+                  {% if absen_ami.id_siswa_id == siswa.id_siswa and absen_ami.id_acara.id_nama_acara.nama_acara|upper == "AMI" %}
+                    {% if absen_ami.kehadiran == true %}
+                      {% namvar 1 as action %}
+                      {% namvar4 1 as action4 %}
+                    {% endif %}
+                    {% if absen_ami.kerapihan == true %}
+                      {% namvar 1 as action %}
+                      {% namvar4 1 as action4 %}
+                    {% endif %}
+                    {% if absen_ami.kebersihan == true %}
+                      {% namvar 1 as action %}
+                      {% namvar4 1 as action4 %}
+                    {% endif %}
+                  {% endif %}
+                  {% if forloop.last %}
+                    <td>{{ action }}</td>
+                    <input type="hidden" value="{% delnamvar %}">
+                  {% endif %}
+                {% endfor %}
+              {% else %}
+                <td>0</td>
+              {% endif %}
+              <td>
+                <button type="button" class ="text-dark btn btn-outline-secondary" data-toggle="modal" data-target="#exampleModal">
+                  Lihat Detail
+                </button>
+                <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                  <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                      <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">Nama</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                          <span aria-hidden="true">&times;</span>
+                        </button>
+                      </div>
+                      <div class="modal-body text-center" >
+                        <div class="row">
+                          {% if tbl_absen_ami %}
+                            {% for absen_ami in tbl_absen_ami %}
+                              {% if absen_ami.id_siswa_id == siswa.id_siswa and absen_ami.id_acara.id_nama_acara.nama_acara|upper == "AMI" %}
+                                {% namvar absen_ami.kehadiran|yesno:"1,0" as action %}
+                                {% namvar2 absen_ami.kerapihan|yesno:"1,0" as action2 %}
+                                {% namvar3 absen_ami.kebersihan|yesno:"1,0" as action3 %}
+                              {% endif %}
+                              {% if forloop.last %}
+                                <div class="col-md-3">
+                                  <h4>Kebersihan </h4>
+                                  <h5>{{ action3 }}</h5>
+                                </div>
+                                <div class="col-md-3">
+                                  <h4>Atribut </h4>
+                                  <h5>{{ action2 }}</h5>
+                                </div>
+                                <div class="col-md-3">
+                                  <h4>Hadir </h4>
+                                  <h5>{{ action }}</h5>
+                                </div>
+                                <input type="hidden" value="{% delnamvar %}">
+                                <input type="hidden" value="{% delnamvar2 %}">
+                                <input type="hidden" value="{% delnamvar3 %}">
+                              {% endif %}
+                            {% endfor %}
+                          {% endif %}
+                        </div>
+                      </div>
+                      <div class="d-flex justify-content-center">
+                        <button type="button" class="btn btn-outline-secondary " style="margin-bottom:20px;" data-dismiss="modal">Oke</button>           
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </td>
+              {% namvar4 0 as action4 %}
+              <td>{{ action4 }}</td>
+              <input type="hidden" value="{% delnamvar4 %}">
+            </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <script>
+
+  </script>
+{% endblock %}

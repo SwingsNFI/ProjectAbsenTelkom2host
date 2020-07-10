@@ -1,0 +1,73 @@
+{% extends 'base.html' %}
+{% block title %}
+  Absen Telkom - Admin
+{% endblock %}
+{% load static %}
+{% block extra_head %}
+  <script src="https://kit.fontawesome.com/4892da469d.js" crossorigin="anonymous"></script>
+{% endblock %}
+{% block content %}  
+  <section>
+    <div class="row">
+      <!-- ini untuk sidebar nya !!! -->
+      <div class="col-md-3">
+        <header>
+          <div class="card rounded-0 text-white " style="background-color: #ff0000;" >
+            <div class="card-body">
+              <h5 class="card-title lead" style="text-align: center; font-size: 25px;">{{ nama_guru }}</h5>
+            </div>
+          </div>
+        </header>
+        <nav class="nav flex-column" style="height:100%; background-color: #3f3f3f;">
+          <a href="to_dashboard_admin_views" class="nav-link-active text-white lead border-bottom border-light" style="font-size: 20px; padding-left: 48px; padding-top: 20px; padding-bottom: 20px; ">Dashboard</a>
+          <a href="to_guru_admin_views" class="nav-link-active text-white lead border-bottom border-light"style="font-size: 20px; padding-left: 48px; padding-top: 20px; padding-bottom: 20px; "><b>Guru</b></a>
+          <a href="to_siswa_admin_views" class="nav-link-active text-white lead border-bottom border-light"style="font-size: 20px; padding-left: 48px; padding-top: 20px; padding-bottom: 20px; ">Siswa</a>
+          <a href="to_kelas_admin_views" class="nav-link-active text-white lead border-bottom border-light"style="font-size: 20px; padding-left: 48px; padding-top: 20px; padding-bottom: 20px; ">Kelas</a>
+          <a href="to_acara_admin_views" class="nav-link-active text-white lead border-bottom border-light"style="font-size: 20px; padding-left: 48px; padding-top: 20px; padding-bottom: 20px; ">Acara</a>
+          <div class="text-center">
+            <a href="login_guru_views" class="btn text-white " style="width: 120px; margin-top: 120px;background-color: #ff0000; ">Logout</a>
+          </div>
+        </nav>
+      </div>
+      <!-- end sidebar -->
+      <!-- ini untuk content nya !!! -->
+      <div class="col-md-8 mt-3">
+        <h2>Form Tambah Guru</h2>
+        <hr width="1200px" style="margin-left: -30px; margin-top: 30px;">
+        <form action="tambahguru_admin_views" method="POST">
+          {% csrf_token %}
+          <div class="container">
+            <div class="form-group">
+              <label for="NIK">NIK</label>
+              <input type="text" class="form-control" name="NIK" >
+            </div>
+            <div class="form-group">
+              <label for="nama">Nama</label>
+              <input type="text" class="form-control" name="nama" > 
+            </div>
+            <div class="form-group">
+              <label for="hakakses">Hak Akses</label>
+              <div class="dropdown btn">
+                <select class="form-control" name="hakakses">
+                  {% for aksess in tbl_akses %}
+                    <option value="{{ aksess.id_akses }}">{{ aksess.nama_akses }}</option>
+                  {% endfor %}
+                </select>
+              </div>
+            </div>
+            <div class="form-group">
+              <label for="email">E-mail</label>
+              <input type="email" class="form-control" name="email" >  
+            </div>
+            <div class="form-group">
+              <label for="password">Password</label>
+              <input type="text" class="form-control" name="password">   
+            </div>
+            <a href="to_guru_admin_views" class="btn text-white" style="background-color:red; float:left">Kembali</a>
+            <button type="submit" class="btn text-white" style="background-color: red; float: right;">Tambahkan</button>
+          </div>
+        </form>
+      </div>
+    </div>  
+  </section>
+{% endblock %}
