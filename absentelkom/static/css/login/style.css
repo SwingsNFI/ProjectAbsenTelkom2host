@@ -1,0 +1,24 @@
+.form-rounded{
+    border-radius: 1rem;
+}
+.form-control{
+    width: 651,57px;
+}
+.button{
+    width :130.15px ;
+    height : 60.7px;
+    border-radius: 5px;
+    border:0;
+    background-color: #ba1f33;
+    color: white;
+
+}
+.button:hover{
+    background-color: #ba1f44;
+}
+@media (min-width: 992px){
+.container, .container-lg, .container-md, .container-sm {
+    max-width: 960px;
+    margin-top: -30px;
+}
+}

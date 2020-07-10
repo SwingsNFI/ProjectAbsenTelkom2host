@@ -1,0 +1,43 @@
+.navbar{
+	background-color: #AF1F12;
+}
+
+.Display{
+	height: 100%;
+	width: 100%;
+}
+.navbar-brand{
+	position: relative;
+	top: 8px;
+}
+
+.card{
+	text-decoration:none;
+	text-decoration-color: none;
+	position: absolute;
+	z-index: 0;
+	top: 25px;
+	right: 4px;
+	margin-top: 10px;
+
+}
+.card-body{
+	text-decoration: none;
+	color: black;
+}
+
+.Icon{
+	position: static;
+	right: 10px;
+	z-index: 0;
+	margin-top: 14px;
+}
+
+.row{
+	color: white;
+	position: fixed;
+}
+
+#button{
+	padding-left: 2px;
+}

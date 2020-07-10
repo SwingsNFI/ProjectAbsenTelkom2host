@@ -1,0 +1,106 @@
+.card{
+	color: black;
+}
+
+.blogout{
+	color: white;
+	height:34px; 
+}
+.User{
+	width: 50px;
+	height: 50px;
+}
+.gradient{
+	background: linear-gradient(to right, #ff416c 0%, #ff4b2b 100%);
+}
+
+.btn-height{
+	height: 5rem;
+}
+
+.btn-size{
+	width: 90%;
+}
+
+.btn:focus{
+	background: green;
+}	
+.card{
+	max-width: 15rem;
+}
+
+@media only screen and (min-width: 992px) {
+
+ul {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+  text-decoration-color: white;
+}
+
+li {
+  float: left;
+  width:20%;
+  margin-top: 3rem;
+  margin-left: 14rem;
+}
+
+}
+
+@media only screen and (min-width: 1080px) {
+
+ul {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+
+}
+
+li {
+  float: left;
+  width:20%;
+  margin-top: 3rem;
+  margin-left: 15rem;
+}
+
+} 
+
+@media only screen and (min-width: 1280px) {
+
+ul {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+
+}
+
+li {
+  float: left;
+  width:20%;
+  margin-top: 3rem;
+  margin-left: 17rem;
+}
+
+} 
+
+@media only screen and (min-width: 1366px) {
+
+ul {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+
+}
+
+li {
+  float: left;
+  width:20%;
+  margin-top: 3rem;
+  margin-left: 19rem;
+}
+
+}
